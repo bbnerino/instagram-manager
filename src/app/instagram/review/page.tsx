@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { handleFileObjectUpload } from "@/utils/fileuploader";
 import { getEmbeddings } from "@/utils/embedding";
+import { askGptWithContext } from "@/utils/askGptWithContext";
+import { reviewKeywordPrompt } from "@/constants/prompt/reviewKeyword";
 
 const InstaReviewPage = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -15,9 +17,11 @@ const InstaReviewPage = () => {
   const onUploadClick = async () => {
     if (!file) return;
     const chunks = await handleFileObjectUpload(file);
-    console.log(chunks);
+    console.log("chunks", chunks[0]);
     const embeddings = await getEmbeddings(chunks);
     console.log("embeddings", embeddings);
+    const answer = await askGptWithContext(reviewKeywordPrompt, chunks, embeddings);
+    console.log("GPT 답변:", answer);
   };
 
   return (

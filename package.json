@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "exceljs": "^4.4.0",
+    "faiss-node": "^0.5.1",
     "next": "15.3.2",
     "openai": "^4.98.0",
     "react": "^19.0.0",
