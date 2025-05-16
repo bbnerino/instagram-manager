@@ -23,9 +23,9 @@ export async function POST(req: NextRequest) {
     const topK = searchTopK(embeddings, queryEmbedding, k);
     return NextResponse.json({
       topKIndices: topK.map((item) => item.idx),
-      topKDistances: topK.map((item) => item.dist),
+      topKDistances: topK.map((item) => item.dist)
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message || "Search error" }, { status: 500 });
   }
-} 
+}

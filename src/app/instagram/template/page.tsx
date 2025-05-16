@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import InstagramCard from "./Card";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface InstagramTemplateItem {
   id: number;
@@ -72,10 +72,46 @@ const InstagramTemplatePage = () => {
                 아우터를 오픈하여 함께 입어도 부담스럽지 않아요〰👀
 
                 [BAONHAUS] 포틀 셔링 레이어드 나시`
+    },
+    {
+      id: 5,
+      imgSrc: "/images/template5.png",
+      contents: `화이트 감성, 성능까지 완벽.
+                책상 위 무드가 달라졌다는 고객님의 실사용 후기입니다.😘
+
+                게이밍 모니터라고 하면 투박하고 시커먼 걸 먼저 떠올리기 쉬운데,
+                필립스 에브니아 27M2N5501은 화이트 무드로 완전히 다른 분위기를 보여줍니다.
+
+                책상에 올려두는 순간, 인테리어 소품처럼 감성적인 존재감.
+
+                🎮 QHD + 180Hz + FAST IPS 의 부드러운 퍼포먼스
+                📺 울트라와이드컬러, HDR400으로 영상까지 선명하게
+                🖥 보더리스 + 멀티스탠드로 데스크테리어 완성
+                ✨ 후면까지 올화이트 디자인, 무드 끝판왕
+
+                “처음 설치하고 전원을 켰을 때
+                모니터가 책상 위 인테리어 소품 같다는 느낌이 들었어요.”
+
+                화이트 키보드, 마우스와의 조합으로 감성 세팅 완성.
+                성능도, 감성도, 실사용자가 직접 증명한 제품.
+
+                #고객님실사용기 #화이트무드 #필립스모니터
+                #화이트데스크테리어 #게이밍모니터추천
+                #27M2N5501 #에브니아 #QHD모니터
+                #모니터리뷰 #책상꾸미기 #화이트감성 #무드셋업 #알파스캔`
     }
   ];
   const [selectedItem, setSelectedItem] = useState<number>(1);
   const [text, setText] = useState<string>("");
+  const router = useRouter();
+
+  const onClickNext = () => {
+    const template = list.find((item) => item.id === selectedItem)?.contents;
+
+    localStorage.setItem("ppt-template", template || text);
+    router.push("/instagram/review");
+  };
+
   return (
     <>
       <h1 className="text-2xl font-bold mt-10">템플릿 선택</h1>
@@ -99,9 +135,9 @@ const InstagramTemplatePage = () => {
         </div>
         <div className="mt-10 flex justify-end items-center">
           <h2 className="text-xl font-bold text-blue-400">{selectedItem ? `${selectedItem}번 템플릿` : "직접 입력"}</h2>
-          <Link href="/instagram/review" className="bg-blue-500 text-white ml-4 px-4 py-2 rounded-md">
+          <button onClick={onClickNext} className="cursor-pointer bg-blue-500 text-white ml-4 px-4 py-2 rounded-md">
             다음
-          </Link>
+          </button>
         </div>
       </div>
     </>

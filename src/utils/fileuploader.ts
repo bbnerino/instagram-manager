@@ -15,8 +15,8 @@ const chunkTextFromReviews = (reviews: (string | number | undefined | null)[], c
 };
 
 // 파일 객체를 직접 받아 처리하는 함수
-export const handleFileObjectUpload = async (file: File): Promise<string[]> => {
-  if (!file) return [];
+export const handleFileObjectUpload = async (file: File): Promise<{ title: string, chunks: string[] }> => {
+  if (!file) return { title: "", chunks: [] };
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -24,10 +24,11 @@ export const handleFileObjectUpload = async (file: File): Promise<string[]> => {
         const data = new Uint8Array(e.target?.result as ArrayBuffer);
         const workbook = read(data, { type: "array" });
         const sheet = workbook.Sheets[workbook.SheetNames[0]];
-        const jsonData = utils.sheet_to_json(sheet, { header: 1 });
+        const jsonData = utils.sheet_to_json(sheet, { header: 1 }) as any[];
+        const title = jsonData[1]?.[1] ? String(jsonData[1][1]) : "";
         const reviews = jsonData.slice(1).map((row: any) => row[5]);
         const chunks = chunkTextFromReviews(reviews);
-        resolve(chunks);
+        resolve({ title, chunks });
       } catch (err) {
         reject(err);
       }

@@ -12,7 +12,9 @@ export async function POST(req: NextRequest) {
         { role: "system", content: systemPrompt },
         {
           role: "user",
-          content: `\n다음은 사용자가 업로드한 .엑셀 파일에서 추출된 내용입니다.\nLLM은 이 정보를 기반으로 답변합니다.\n\n[참고 정보]:\n${context}`
+          content: context
+            ? `\n다음은 사용자가 업로드한 .엑셀 파일에서 추출된 내용입니다.\nLLM은 이 정보를 기반으로 답변합니다.\n\n[참고 정보]:\n${context}`
+            : ""
         }
       ],
       temperature: 0.7
